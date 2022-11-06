@@ -1,0 +1,15 @@
+{
+  "name": "firefox-extension-tempate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "npm run build -- -w",
+    "start": "npm run build && web-ext run -s extension/",
+    "live": "web-ext run -s extension",
+    "release": "webpack && web-ext build -s extension/ --overwrite-dest"
+  },
+  "author": "ln",
+  "license": "MPL-2.0"
+}

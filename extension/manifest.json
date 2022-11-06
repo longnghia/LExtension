@@ -1,0 +1,72 @@
+{
+  "manifest_version": 2,
+  "name": "Lextension",
+  "version": "1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lextension@mozilla.org",
+      "strict_min_version": "53a1"
+    }
+  },
+  "icons": {
+    "16": "images/ic_16.png",
+    "48": "images/ic_48.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "48": "images/ic_48.png"
+    },
+    "default_title": "Lextension",
+    "default_popup": "popup/popup.html"
+  },
+
+  "background": {
+    "scripts": ["dist/background.js"]
+  },
+  
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content.js"]
+    }
+  ],
+
+  "permissions": [
+    "contextMenus",
+    "tab",
+    "storage",
+    "<all_urls>"
+  ],
+
+  "commands": {
+    "read-later": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "MacCtrl+B"
+      },
+      "description": "Send a 'read-later' event to the extension"
+    },
+    "open-in-bg": {
+      "suggested_key": {
+        "default": "Ctrl+Q",
+        "mac": "MacCtrl+Q"
+      },
+      "description": "open selected in background"
+    },
+    "fakeCtrlW": {
+      "description": "Fake the Ctrl W event"
+    },
+    "logTabs": {
+      "description": "Log current window's tabs"
+    },
+    "dublicateTab": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "MacCtrl+M"
+      },
+      "description": "Duplicate a tab"
+    }
+  }
+}

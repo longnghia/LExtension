@@ -1,0 +1,7 @@
+.error {
+  background: rgba(255,0,0,0.4);
+}
+
+.success {
+  background: rgba(0,255,0,0.4);
+}
