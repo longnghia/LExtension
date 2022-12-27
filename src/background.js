@@ -20,7 +20,47 @@ browser.storage.local.get().then(storage => {
     if (!storage["collection"]?.length) {
         browser.storage.local.set({ "collection": ["https://github.dev"] })
     }
+
+    if (!storage["omniboxs"]?.length) {
+        browser.storage.local.set({
+            "omniboxs": [
+                {
+                    src: "ios",
+                    des: "https://github.com/search?o=desc&q=stars%3A%3E%3D20+fork%3Atrue+language%3Aswift&s=updated&type=Repositories"
+                }
+            ]
+        })
+    }
+    
+    if (!storage["background"]?.length) {
+        browser.storage.local.set({ "background": ["mylivewallpapers.com-Yellow-Space-Suit-Girl.webm"] })
+    }
 })
+
+// Omnibox
+
+browser.omnibox.setDefaultSuggestion({
+    description: `Search:
+      (e.g. "android" | "ios")`
+});
+
+browser.omnibox.onInputEntered.addListener(function (text) {
+    let newURL = "https://google.com"
+    text = text.trim()
+    browser.storage.local.get().then(data => {
+        data && data.omniboxs && data.omniboxs.forEach(box => {
+            if (box.src == text){
+                newURL = box.des;
+                console.log(`${TAG} found`, text), newURL;
+            }
+        })
+
+        chrome.tabs.update({
+            url: newURL,
+        });
+    })
+});
+
 
 // let db = { "read-later": [] }
 let db = []

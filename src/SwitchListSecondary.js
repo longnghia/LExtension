@@ -33,7 +33,6 @@ export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab 
     let list = tabs.map((tab, index) => (
       <ListItem
         divider
-        disablePadding
       >
         <ListItemIcon>
           <WifiIcon />

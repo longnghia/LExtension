@@ -24,20 +24,32 @@
   "background": {
     "scripts": ["dist/background.js"]
   },
-  
 
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["dist/content.js"]
-    }
-  ],
+
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["dist/content.js"]
+  }],
+
+  "omnibox": {
+    "keyword": "ee"
+  },
+
+  "chrome_url_overrides": {
+    "newtab": "dist/newtab/newtab.html"
+  },
 
   "permissions": [
     "contextMenus",
     "tab",
     "storage",
     "<all_urls>"
+  ],
+
+  "web_accessible_resources": [
+    "dist/newtab/mylivewallpapers.com-Yellow-Space-Suit-Girl.mp4",
+    "dist/newtab/mylivewallpapers.com-Yellow-Space-Suit-Girl.webm",
+    "dist/newtab/mylivewallpapers.com-Yellow-Space-Suit-Girl.mp4.jpg"
   ],
 
   "commands": {
