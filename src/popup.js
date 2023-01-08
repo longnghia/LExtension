@@ -37,7 +37,7 @@ class Popup extends React.Component {
     browser.storage.local.get().then(storage => {
       this.setState({ loading: false })
       if (storage["read-later"]) {
-        this.setState({ tabs: storage["read-later"] })
+        this.setState({ tabs: storage["read-later"].reverse() })
         this.log(`tabs=`, this.state.tabs);
       }
     });
@@ -133,15 +133,23 @@ class Popup extends React.Component {
   }
 
   render() {
+
+    let emptyImage = (<img width="100%" src={browser.runtime.getURL("images/empty_list.png")} />)
+
     return (
       <div>
         <PrimarySearchAppBar onQuery={this.onQuery} />
 
-        <SwitchListSecondary
-          tabs={this.state.tabs.reverse()}
-          openAndRemoveTab={this.openAndRemoveTab}
-          removeTab={this.removeTab}
-        />
+        {
+          !!this.state.tabs.length ?
+            <SwitchListSecondary
+              tabs={this.state.tabs}
+              openAndRemoveTab={this.openAndRemoveTab}
+              removeTab={this.removeTab}
+            />
+            :
+            emptyImage
+        }
 
       </div>
     );
