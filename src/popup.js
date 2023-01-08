@@ -37,7 +37,7 @@ class Popup extends React.Component {
     browser.storage.local.get().then(storage => {
       this.setState({ loading: false })
       if (storage["read-later"]) {
-        this.setState({ tabs: storage["read-later"] })
+        this.setState({ tabs: storage["read-later"].reverse() })
         this.log(`tabs=`, this.state.tabs);
       }
     });
@@ -133,12 +133,13 @@ class Popup extends React.Component {
   }
 
   render() {
+    console.log("\n\n fist item", this.state.tabs[0]?.title)
     return (
       <div>
         <PrimarySearchAppBar onQuery={this.onQuery} />
 
         <SwitchListSecondary
-          tabs={this.state.tabs.reverse()}
+          tabs={this.state.tabs}
           openAndRemoveTab={this.openAndRemoveTab}
           removeTab={this.removeTab}
         />
