@@ -1,2 +1,0 @@
-browser.runtime.onMessage.addListener((function(e,n,o){if("open-selected"==(null==e?void 0:e.action)){let e=window.getSelection().toString();return console.log("[OpenSelected]",e),o({link:e}),!0}}));
-//# sourceMappingURL=content.js.map
