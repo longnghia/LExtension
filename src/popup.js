@@ -133,16 +133,23 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log("\n\n fist item", this.state.tabs[0]?.title)
+
+    let emptyImage = (<img width="100%" src={browser.runtime.getURL("images/empty_list.png")} />)
+
     return (
       <div>
         <PrimarySearchAppBar onQuery={this.onQuery} />
 
-        <SwitchListSecondary
-          tabs={this.state.tabs}
-          openAndRemoveTab={this.openAndRemoveTab}
-          removeTab={this.removeTab}
-        />
+        {
+          !!this.state.tabs.length ?
+            <SwitchListSecondary
+              tabs={this.state.tabs}
+              openAndRemoveTab={this.openAndRemoveTab}
+              removeTab={this.removeTab}
+            />
+            :
+            emptyImage
+        }
 
       </div>
     );
