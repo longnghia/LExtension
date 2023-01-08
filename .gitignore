@@ -1,1 +1,8 @@
 web-ext-artifacts/*
+
+extension/dist/background.js
+extension/dist/background.js.map
+extension/dist/content.js
+extension/dist/content.js.map
+extension/dist/popup.js
+extension/dist/popup.js.map
