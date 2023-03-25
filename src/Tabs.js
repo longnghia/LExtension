@@ -18,17 +18,31 @@ function saveTabs() {
 }
 
 function dublicateTab() {
-    browser.tabs.query({
-        active: true,
-        currentWindow: true
-    }, function (tabs) {
-        browser.tabs.create({
-            active: false,
-            openerTabId: tabs[0].id,
-            index: tabs[0].index + 1,
-            url: tabs[0].url,
-        })
-    });
+    createTab(null)
+}
+
+  
+function onCreated(tab) {
+    console.log(`Created new tab: ${tab.id}`)
+  }
+  
+  function onError(error) {
+    console.log(`Error: ${error}`);
+  }
+
+function createTab(url, active=false) {
+        browser.tabs.query({
+            active: true,
+            currentWindow: true
+        }, function (tabs) {
+            browser.tabs.create({
+                active: active,
+                openerTabId: tabs[0].id,
+                index: tabs[0].index + 1,
+                url: url ?? tabs[0].url,
+            })
+            .then(onCreated, onError);
+        });
 }
 
 function save2Json(data) {
@@ -130,4 +144,4 @@ function doFakeCtrW() {
     })
 }
 
-export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink }
+export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab }
