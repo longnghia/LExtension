@@ -21,28 +21,28 @@ function dublicateTab() {
     createTab(null)
 }
 
-  
+
 function onCreated(tab) {
     console.log(`Created new tab: ${tab.id}`)
-  }
-  
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
+}
 
-function createTab(url, active=false) {
-        browser.tabs.query({
-            active: true,
-            currentWindow: true
-        }, function (tabs) {
-            browser.tabs.create({
-                active: active,
-                openerTabId: tabs[0].id,
-                index: tabs[0].index + 1,
-                url: url ?? tabs[0].url,
-            })
+function onError(error) {
+    console.log(`Error: ${error}`);
+}
+
+function createTab(url, active = false) {
+    browser.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function (tabs) {
+        browser.tabs.create({
+            active: active,
+            openerTabId: tabs[0].id,
+            index: tabs[0].index + 1,
+            url: url ?? tabs[0].url,
+        })
             .then(onCreated, onError);
-        });
+    });
 }
 
 function save2Json(data) {
@@ -73,7 +73,7 @@ function openUrl(link, command) {
 
 }
 
-function openLink(href, active = false){
+function openLink(href, active = false) {
     browser.tabs.query({
         active: true,
         currentWindow: true
@@ -144,4 +144,29 @@ function doFakeCtrW() {
     })
 }
 
-export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab }
+function getCurrentTab() {
+    return new Promise(function (resolve, reject) {
+        browser.tabs.query({
+            highlighted: true,
+            currentWindow: true
+        }, function (tabs) {
+            if (tabs[0]) {
+                return resolve(tabs[0]);
+            }
+            resolve();
+        })
+    });
+}
+
+function executeScript(str) {
+    getCurrentTab().then(tab => {
+        console.log("\nexecuteScript", tab.id)
+        browser.tabs.executeScript(
+            tab.id, { code: str }
+        )
+        .then(res => { console.log("[executeScript] done", res)})
+        .catch(err => console.log("[executeScript] error", err))
+    })
+}
+
+export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab, getCurrentTab, executeScript }
