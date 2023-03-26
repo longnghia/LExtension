@@ -11,3 +11,6 @@ browser.runtime.onMessage.addListener(
         }
     }
 );
+
+// add cdn
+// document.body.appendChild(document.createElement('script')).src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';

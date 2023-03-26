@@ -1,11 +1,22 @@
 import { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW } from "./Tabs"
-
+import { gotoHook } from './Hooks/background'
+import defaultDB from "./Database";
 const TAG = "[Background]"
 
 browser.browserAction.setBadgeBackgroundColor({ 'color': 'blue' });
 
-// let gettingActiveTab = browser.tabs.query({ active: true, currentWindow: true });
-// let gettingSelectedTab = browser.tabs.query({ highlighted: true, currentWindow: true });
+// hook script
+browser.contextMenus.create({
+    title: "Hook-Script",
+    type: "checkbox",
+    contexts: ["browser_action"],
+    onclick: function () {
+        console.log("[hook] goto hook")
+        gotoHook()
+    },
+    // checked: true
+});
+
 
 
 let readLater = "read-later"
@@ -35,6 +46,11 @@ browser.storage.local.get().then(storage => {
     if (!storage["background"]?.length) {
         browser.storage.local.set({ "background": ["mylivewallpapers.com-Yellow-Space-Suit-Girl.webm"] })
     }
+
+    if (!storage["hooks"]?.length) {
+        console.log("[init hook ] ", { hooks: defaultDB.hooks })
+        browser.storage.local.set({ hooks: defaultDB.hooks })
+    }
 })
 
 // Omnibox
@@ -49,7 +65,7 @@ browser.omnibox.onInputEntered.addListener(function (text) {
     text = text.trim()
     browser.storage.local.get().then(data => {
         data && data.omniboxs && data.omniboxs.forEach(box => {
-            if (box.src == text){
+            if (box.src == text) {
                 newURL = box.des;
                 console.log(`${TAG} found`, text), newURL;
             }

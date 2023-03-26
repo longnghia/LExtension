@@ -12,7 +12,8 @@ module.exports = {
     // For example, you could add a background script like:
     background: 'background.js',
     popup: 'popup.js',
-    content: 'content.js'
+    content: 'content.js',
+    hook: 'Hooks/Hook.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -32,7 +33,12 @@ module.exports = {
           ]
         }
       }
-    }]
+    },
+    {
+      exclude: [path.join(__dirname, '../node_modules')],
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader'],
+    },]
   },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
