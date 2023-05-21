@@ -7,6 +7,14 @@ import { toastScript } from "../Script";
 var db = defaultDB;
 getValue().then(res => { db = res })
 
+if (!localStorage['enabled']){
+    localStorage['enabled']="true"
+}
+
+if (!localStorage['enabledLog']){
+    localStorage['enabledLog']="false"
+}
+
 let enabled = localStorage['enabled'] ? JSON.parse(localStorage['enabled']) : false
 let enabledLog = localStorage['enabledLog'] ? JSON.parse(localStorage['enabledLog']) : false
 

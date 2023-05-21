@@ -132,7 +132,6 @@ class Hook extends React.Component {
   }
 
   render() {
-    this.log("render", this.state.hooks)
     return (
       <Fragment>
         <div id='toolbox'>
