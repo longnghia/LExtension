@@ -1,9 +1,16 @@
-let Command = {
-    readLater: "read-later"
-}
+const Command = {
+  readLater: 'read-later',
+};
 
-let Storage = {
-    readLater: "read-later"
-}
+const Storage = {
+  readLater: 'read-later',
+};
 
-export {Command, Storage}
+const LocalStorage = {
+  HOOK: {
+    logging: 'hook_logging',
+    enabled: 'hook_enable',
+  },
+};
+
+export { Command, Storage, LocalStorage };

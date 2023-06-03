@@ -1,4 +1,4 @@
- {
+{
   "name": "firefox-extension-tempate",
   "version": "1.0.0",
   "description": "",
@@ -6,8 +6,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "npm run build -- -w",
-    "start": "npm run build && web-ext run -s extension/",
-    "live": "web-ext run -s extension",
+    "start": "web-ext run -s extension",
     "release": "webpack && web-ext build -s extension/ --overwrite-dest"
   },
   "author": "ln",
@@ -30,13 +29,14 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^6.6.0",
-    "eslint": "^8.8.0",
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-flowtype": "^8.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
     "html-loader": "^3.1.0",

@@ -3,7 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-console.log(path.join(__dirname, '../node_modules'))
+console.log(path.join(__dirname, 'node_modules'))
 
 module.exports = {
   entry: {
@@ -23,7 +23,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      exclude: [path.join(__dirname, '../node_modules')],
+      exclude: [path.join(__dirname, 'node_modules')],
       test: /\.js$/,
       use: {
         loader: 'babel-loader',
@@ -35,7 +35,7 @@ module.exports = {
       }
     },
     {
-      exclude: [path.join(__dirname, '../node_modules')],
+      exclude: [path.join(__dirname, 'node_modules')],
       test: /\.css$/,
       use: ['style-loader', 'css-loader'],
     },]
@@ -45,7 +45,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: [
       path.join(__dirname, 'src'),
-      '../node_modules',
+      'node_modules',
     ],
   },
   plugins: [
