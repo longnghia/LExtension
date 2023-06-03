@@ -45,7 +45,8 @@
 }
 
 #toolbox {
-    position: sticky;
+    display: flex;
+    justify-content: space-between;
 }
 
 [contenteditable] {

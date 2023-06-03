@@ -23,20 +23,11 @@ function Hook() {
   const [db, setDb] = useState({});
   const dbKey = DBKey.hooks;
 
-  const getHooks = async function () {
-    const storage = await getValue();
-    console.log('[getHooks]', storage[dbKey]);
-    setLoading(false);
-    if (storage[dbKey]) {
-      setDb(storage);
-      setHooks(storage[dbKey]);
-    }
-  };
-
   useEffect(() => {
     getHooks();
     setLogging(localStorage[hookLogging] ? JSON.parse(localStorage[hookLogging]) : false);
     setEnabled(localStorage[hookEnabled] ? JSON.parse(localStorage[hookEnabled]) : false);
+    setShortcuts();
   }, []);
 
   useEffect(() => {
@@ -45,6 +36,15 @@ function Hook() {
   const openPage = function (event) {
     console.log(event.target);
   };
+  async function getHooks() {
+    const storage = await getValue();
+    console.log('[getHooks]', storage[dbKey]);
+    setLoading(false);
+    if (storage[dbKey]) {
+      setDb(storage);
+      setHooks(storage[dbKey]);
+    }
+  }
   const onClickSubmitButton = () => {
     const hookEles = document.getElementsByClassName('hook');
     const newHooks = [];
@@ -55,11 +55,11 @@ function Hook() {
       const hookActive = hookEle.querySelector('.hook-active input');
 
       const hook = {
-        src: hookSrc.textContent,
-        des: hookDes.textContent,
+        src: hookSrc.textContent.trim(),
+        des: hookDes.textContent.trim(),
         active: hookActive.checked,
       };
-      newHooks.push(hook);
+      if (hook.src && hook.des) { newHooks.push(hook); }
     }
     const tmpDb = { ...db };
     tmpDb[dbKey] = newHooks;
@@ -73,10 +73,8 @@ function Hook() {
   };
 
   const onClickAddButton = () => {
-    if (hooks[hooks.length - 1].src && hooks[hooks.length - 1].des) {
-      const newHook = { src: '', des: '', active: true };
-      setHooks([newHook, ...hooks]);
-    }
+    const newHook = { src: '', des: '', active: true };
+    setHooks([newHook, ...hooks]);
   };
 
   const removeHook = (hook) => {
@@ -97,40 +95,60 @@ function Hook() {
     // });
   };
 
+  function setShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 's':
+          if ((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            onClickSubmitButton();
+          }
+          break;
+
+        default:
+          break;
+      }
+    }, false);
+  }
   return (
     <>
       <div id="toolbox">
-        <Tooltip title="Add">
-          <IconButton
-            className="hook-remove"
-            id="submit"
-            onClick={onClickAddButton}
-            color="primary"
-          >
-            <AddIcon label />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Save">
+        <div>
+          <Tooltip title="Add">
+            <IconButton
+              className="hook-remove"
+              id="submit"
+              onClick={onClickAddButton}
+              color="primary"
+            >
+              <AddIcon label />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Save">
 
-          <IconButton
-            onClick={onClickSubmitButton}
-            color="primary"
-          >
-            <SaveAsIcon />
-          </IconButton>
-        </Tooltip>
-        <span>
-          Logging:
-          <Tooltip title="Log">
-            <Switch onChange={toggleLog} checked={logging} />
+            <IconButton
+              onClick={onClickSubmitButton}
+              color="primary"
+            >
+              <SaveAsIcon />
+            </IconButton>
           </Tooltip>
-        </span>
-        <span>
-          Enabled:
-          <Tooltip title="Log">
-            <Switch onChange={toggleEnabled} checked={enabled} />
-          </Tooltip>
-        </span>
+        </div>
+        <div>
+
+          <span>
+            Logging:
+            <Tooltip title="Log">
+              <Switch onChange={toggleLog} checked={logging} />
+            </Tooltip>
+          </span>
+          <span>
+            Enabled:
+            <Tooltip title="Enabled">
+              <Switch onChange={toggleEnabled} checked={enabled} />
+            </Tooltip>
+          </span>
+        </div>
       </div>
 
       <div id="hooks-container">
