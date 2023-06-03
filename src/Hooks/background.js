@@ -26,45 +26,6 @@ function updateChange(changes, area) {
 
 browser.storage.onChanged.addListener(updateChange);
 
-/*
-contextMenus in browser_action
-*/
-
-// chrome.contextMenus.create({
-//     title: "Enable Hook-Script",
-//     type: "checkbox",
-//     contexts: ["browser_action"],
-//     onclick: function () {
-//         toggleEnabled()
-//     },
-//     checked: enabled
-// });
-
-/*
-log
-*/
-// chrome.contextMenus.create({
-//     title: "Toggle log",
-//     type: "checkbox",
-//     contexts: ["browser_action"],
-//     onclick: function () {
-//         toggleEnabledLog()
-//     },
-//     checked: enabledLog
-
-// });
-/*
-hard reload
-*/
-// chrome.contextMenus.create({
-//     title: "Hard reload",
-//     type: "normal",
-//     contexts: ["browser_action"],
-//     onclick: function () {
-//         location.reload(true);
-//     },
-// });
-
 chrome.runtime.onMessage.addListener((message, messageSender, sendResponse) => {
   if (message.action && message.action == 'SAVE_HOOKS') {
     console.log('[received], SAVE_HOOKS');

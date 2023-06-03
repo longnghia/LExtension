@@ -1,23 +1,52 @@
-import { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW } from "./Tabs"
+import { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, reload as reloadTab } from "./Tabs"
 import { gotoHook } from './Hooks/background'
 import defaultDB from "./Database";
 const TAG = "[Background]"
 
 browser.browserAction.setBadgeBackgroundColor({ 'color': 'blue' });
 
+// put in background so contextMenus is created once only.
 // hook script
 browser.contextMenus.create({
+    id: 'hook',
     title: "Hook-Script",
-    type: "checkbox",
     contexts: ["browser_action"],
     onclick: function () {
         console.log("[hook] goto hook")
         gotoHook()
     },
-    // checked: true
+    "icons": {
+        "16": "../../images/hook.png",
+        "32": "../../images/hook.png"
+    }
 });
 
+// backgroundURL
+browser.contextMenus.create({
+    id: 'debug',
+    title: "Debug",
+    contexts: ["browser_action"],
+    onclick: onClickDebug,
+    "icons": {
+        "16": "../../images/debug.png",
+        "32": "../../images/debug.png"
+    }
+});
 
+// hard reload
+
+chrome.contextMenus.create({
+    id: 'reload',
+    title: "Hard reload",
+    contexts: ["browser_action"],
+    onclick: function () {
+        reloadTab()
+    },
+    "icons": {
+        "16": "../../images/reload.png",
+        "32": "../../images/reload.png"
+    }
+});
 
 let readLater = "read-later"
 let isReady = false
@@ -208,6 +237,9 @@ function parseTabInfo(tab) {
     }
 }
 
+function onClickDebug() {
+    openUrl(browser.runtime.getURL('_generated_background_page.html'))
+}
 /*
 read-later: [
     {url:title:date},

@@ -60,6 +60,7 @@ function save2Json(data) {
 /* Open selected */
 
 function openUrl(link, command) {
+    console.log('$link', link)
     browser.tabs.query({
         active: true,
         currentWindow: true
@@ -160,7 +161,7 @@ function getCurrentTab() {
 
 function executeScript(str) {
     getCurrentTab().then(tab => {
-        console.log("\nexecuteScript", tab.id)
+        console.log("\nexecuteScript", tab.url)
         browser.tabs.executeScript(
             tab.id, { code: str }
         )
@@ -169,4 +170,8 @@ function executeScript(str) {
     })
 }
 
-export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab, getCurrentTab, executeScript }
+function reload(hard=false){
+    executeScript(`window.location.reload(${hard})`)
+}
+
+export { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab, getCurrentTab, executeScript, reload }
