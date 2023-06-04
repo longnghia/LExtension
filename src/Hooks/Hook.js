@@ -8,41 +8,34 @@ import './style.css';
 import { Switch, Tooltip } from '@mui/material';
 import HookRow from './HookRow';
 import { DBKey } from '../Database';
-import { getValue, setValue } from '../Storage';
-import { openLink } from '../Tabs';
-import { LocalStorage } from '../Const';
+import { getValue, setValue, putSetting } from '../Storage';
 import toast from '../Toast';
 
 function Hook() {
-  const hookLogging = LocalStorage.HOOK.logging;
-  const hookEnabled = LocalStorage.HOOK.enabled;
   const [loading, setLoading] = useState(true);
-  const [logging, setLogging] = useState(false);
-  const [enabled, setEnabled] = useState(false);
   const [hooks, setHooks] = useState([]);
   const [db, setDb] = useState({});
-  const dbKey = DBKey.hooks;
+  const [settings, setSettings] = useState({});
+  const dbName = DBKey.hooks;
 
   useEffect(() => {
     getHooks();
-    setLogging(localStorage[hookLogging] ? JSON.parse(localStorage[hookLogging]) : false);
-    setEnabled(localStorage[hookEnabled] ? JSON.parse(localStorage[hookEnabled]) : false);
     setShortcuts();
   }, []);
 
   useEffect(() => {
-    console.log('[hook]', db);
-  }, [db]);
-  const openPage = function (event) {
-    console.log(event.target);
-  };
+    putSetting({ hook: settings });
+    console.log('[settings', settings);
+  }, [settings]);
+
   async function getHooks() {
     const storage = await getValue();
-    console.log('[getHooks]', storage[dbKey]);
+    console.log('[getHooks]', storage[dbName]);
     setLoading(false);
-    if (storage[dbKey]) {
+    if (storage[dbName]) {
       setDb(storage);
-      setHooks(storage[dbKey]);
+      setHooks(storage[dbName]);
+      setSettings(storage?.settings?.hook ?? {});
     }
   }
   const onClickSubmitButton = () => {
@@ -62,7 +55,7 @@ function Hook() {
       if (hook.src && hook.des) { newHooks.push(hook); }
     }
     const tmpDb = { ...db };
-    tmpDb[dbKey] = newHooks;
+    tmpDb[dbName] = newHooks;
 
     setDb(tmpDb);
     setValue(tmpDb).then((res) => console.log(res)).catch((err) => console.log('error', err));
@@ -83,16 +76,11 @@ function Hook() {
   };
 
   const toggleLog = () => {
-    localStorage[hookLogging] = `${!logging}`;
-    setLogging(!logging);
+    setSettings({ ...settings, logging: !settings.logging });
   };
 
   const toggleEnabled = () => {
-    localStorage[hookEnabled] = `${!enabled}`;
-    setEnabled(!enabled);
-    // chrome.browserAction.setIcon({
-    //   path: enabled ? "../icon/icons8-hook-100-color.png" : "../icon/icons8-hook-100.png"
-    // });
+    setSettings({ ...settings, active: !settings.active });
   };
 
   function setShortcuts() {
@@ -139,13 +127,13 @@ function Hook() {
           <span>
             Logging:
             <Tooltip title="Log">
-              <Switch onChange={toggleLog} checked={logging} />
+              <Switch onChange={toggleLog} checked={settings.logging} />
             </Tooltip>
           </span>
           <span>
             Enabled:
             <Tooltip title="Enabled">
-              <Switch onChange={toggleEnabled} checked={enabled} />
+              <Switch onChange={toggleEnabled} checked={settings.active} />
             </Tooltip>
           </span>
         </div>

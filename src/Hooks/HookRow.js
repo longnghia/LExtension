@@ -25,7 +25,7 @@ export default function HookRow({
   console.log('[row]', src, des, defaultActive);
   return (
     <div className={removing ? 'hook removing' : 'hook'}>
-      <div className="hook-src" onChange={()=>{console.log}} contentEditable="true">{src}</div>
+      <div className="hook-src" contentEditable="true">{src}</div>
       <div className="hook-des" contentEditable="true">{des}</div>
       <Switch className="hook-active" checked={active} onChange={toggleActive} />
       <IconButton
@@ -33,9 +33,10 @@ export default function HookRow({
         onClick={onClickRemoveHook}
         aria-label="delete"
         disabled={removing}
-                color="error">
-                <DeleteIcon />
-            </IconButton>
-        </div>
+        color="error"
+      >
+        <DeleteIcon />
+      </IconButton>
+    </div>
   );
 }

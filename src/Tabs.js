@@ -166,7 +166,7 @@ function executeScript(str) {
             tab.id, { code: str }
         )
         .then(res => { console.log("[executeScript] done", res)})
-        .catch(err => console.log("[executeScript] error", err))
+        .catch(err => console.log("[executeScript] error", err, str))
     })
 }
 

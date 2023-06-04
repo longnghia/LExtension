@@ -4,7 +4,8 @@ import { getValue, setValue } from '../Storage';
 import { setTmpBadge } from '../Badge';
 
 let db = defaultDB;
-getValue().then((res) => { db = res; });
+let { settings, hooks } = db;
+getValue().then((res) => { db = res; console.log('[hook] init', db); });
 
 if (!localStorage.enabled) {
   localStorage.enabled = 'true';
@@ -14,20 +15,21 @@ if (!localStorage.enabledLog) {
   localStorage.enabledLog = 'false';
 }
 
-let enabled = localStorage.enabled ? JSON.parse(localStorage.enabled) : false;
-let enabledLog = localStorage.enabledLog ? JSON.parse(localStorage.enabledLog) : false;
-
 const logCss = 'color: blue';
 
 function updateChange(changes, area) {
   console.log(`[hook] db changed: ${area}`);
-  getValue().then((res) => { db = res; });
+  getValue().then((res) => {
+    db = res;
+    settings = db.settings;
+    hooks = db.hooks;
+  });
 }
 
 browser.storage.onChanged.addListener(updateChange);
 
 chrome.runtime.onMessage.addListener((message, messageSender, sendResponse) => {
-  if (message.action && message.action == 'SAVE_HOOKS') {
+  if (message.action && message.action === 'SAVE_HOOKS') {
     console.log('[received], SAVE_HOOKS');
     updateDatabase(message.payload);
   }
@@ -56,16 +58,16 @@ function removeBeforeRequestListener() {
 }
 
 function onBeforeRequestListener(info) {
-  if (enabledLog) {
+  if (settings.hook.logging) {
     console.log('%c[info.url]', logCss, info.url);
   }
   const availbleKey = hasUrl(info.url);
-  if (enabled && availbleKey > -1) {
+  if (settings.hook.active && availbleKey > -1) {
     console.log(`[onBeforeRequest] has url ${info.url}`);
-    const hook = db.hooks[availbleKey];
+    const hook = hooks[availbleKey];
 
     if (hook && hook.des && hook.active) {
-      if (hook.des.toLowerCase() == 'cancel') { //
+      if (hook.des.toLowerCase() === 'cancel') { //
         console.log('%c[cancel]', 'color: red', +info.url);
         setTmpBadge('X');
         return {
@@ -74,7 +76,7 @@ function onBeforeRequestListener(info) {
       }
       const target = hook.des;
       setTmpBadge('~>');
-      executeScript(`console.log("[hook] hooked", ${info.url})`);
+      executeScript(`console.log("%c[HOOK]", "color: red", "${info.url} -> ${hook.des}")`);
       console.log('%c[redirected]', 'color: red', `from ${info.url} to ${target}`);
       return {
         redirectUrl: getChromeUrl(target),
@@ -91,8 +93,8 @@ chrome.browserAction.onClicked.addListener(toggleEnabled);
 
 function hasUrl(url) {
   if (db) {
-    for (let i = 0; i < db.hooks.length; i++) {
-      if (url.match(new RegExp(db.hooks[i].src)) && url != getChromeUrl(db.hooks[i].des)) {
+    for (let i = 0; i < hooks.length; i++) {
+      if (url.match(new RegExp(hooks[i].src)) && url != getChromeUrl(hooks[i].des)) {
         return i;
       }
     }
@@ -107,17 +109,17 @@ function getChromeUrl(link) {
 }
 
 function toggleEnabled() {
-  enabled = !enabled;
-  localStorage.enabled = enabled;
+  settings.hook.active = !settings.hook.active;
+  localStorage.enabled = settings.hook.active;
   chrome.browserAction.setIcon({
-    path: enabled ? '../icon/icons8-hook-100-color.png' : '../icon/icons8-hook-100.png',
+    path: settings.hook.active ? '../icon/icons8-hook-100-color.png' : '../icon/icons8-hook-100.png',
   });
 }
 
 function toggleEnabledLog() {
-  enabledLog = !enabledLog;
-  console.log(`enabled log: ${enabledLog}`);
-  localStorage.enabledLog = enabledLog;
+  settings.hook.logging = !settings.hook.logging;
+  console.log(`enabled log: ${settings.hook.logging}`);
+  localStorage.enabledLog = settings.hook.logging;
   removeBeforeRequestListener();
   addBeforeRequestListener();
 }
