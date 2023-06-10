@@ -38,7 +38,7 @@ function Hook() {
       setSettings(storage?.settings?.hook ?? {});
     }
   }
-  const onClickSubmitButton = () => {
+  const onSaveAll = () => {
     const hookEles = document.getElementsByClassName('hook');
     const newHooks = [];
     for (let i = 0; i < hookEles.length; i += 1) {
@@ -89,7 +89,7 @@ function Hook() {
         case 's':
           if ((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
-            onClickSubmitButton();
+            onSaveAll();
           }
           break;
 
@@ -115,7 +115,7 @@ function Hook() {
           <Tooltip title="Save">
 
             <IconButton
-              onClick={onClickSubmitButton}
+              onClick={onSaveAll}
               color="primary"
             >
               <SaveAsIcon />
