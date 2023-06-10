@@ -25,7 +25,7 @@ browser.contextMenus.create({
   },
 });
 
-// hard reload
+// Omnibox
 
 browser.contextMenus.create({
   id: 'omnibox',
