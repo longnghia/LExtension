@@ -1,7 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import PrimarySearchAppBar from './SearchBar';
 import SwitchListSecondary from './SwitchListSecondary';
 import { openLink } from './Tabs';

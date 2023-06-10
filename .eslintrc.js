@@ -19,6 +19,6 @@ module.exports = {
   rules: {
     'no-console': 0,
     'react/jsx-filename-extension': 0,
-    'import/no-extraneous-dependencies': 0,
+    // 'import/no-extraneous-dependencies': 0,
   },
 };
