@@ -1,7 +1,7 @@
 import React from 'react';
-import Switch from '@mui/material/Switch';
-import IconButton from '@mui/material/IconButton';
+import { Switch, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { TextareaAutosize } from '@mui/base'
 import PropTypes from 'prop-types';
 import './style.css';
 
@@ -36,8 +36,8 @@ export default function Row({
   console.log('[row]', src, des, defaultActive);
   return (
     <div className={removing ? 'data removing' : 'data'}>
-      <div className="data-src" contentEditable="true">{src}</div>
-      <div className="data-des" contentEditable="true">{des}</div>
+      <TextareaAutosize className="data-src no-resize no-border" contentEditable="true">{src}</TextareaAutosize>
+      <TextareaAutosize className="data-des no-resize no-border" contentEditable="true">{des}</TextareaAutosize>
       <Switch className="data-active" checked={active} onChange={toggleActive} />
       <IconButton
         className="data-remove"

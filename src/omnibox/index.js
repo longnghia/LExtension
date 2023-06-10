@@ -1,10 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { v4 as uuidv4 } from 'uuid';
-import { Tooltip } from '@mui/material';
+import { Tooltip, IconButton } from '@mui/material';
 import Row from '../components/Row';
 import { DBKey } from '../Database';
 import { getValue, setValue } from '../Storage';
@@ -36,8 +35,8 @@ function Omnibox() {
       const omniboxActive = omniboxEle.querySelector('.data-active input');
 
       const omnibox = {
-        src: omniboxSrc.textContent.trim(),
-        des: omniboxDes.textContent.trim(),
+        src: omniboxSrc.value.trim(),
+        des: omniboxDes.value.trim(),
         active: omniboxActive.checked,
       };
       if (omnibox.src && omnibox.des) { newOmniboxs.push(omnibox); }
@@ -104,14 +103,14 @@ function Omnibox() {
 
       <div id="omniboxs-container">
         {
-                    omniboxs.map((omnibox) => (
-                      <Row
-                        hook={omnibox}
-                        key={uuidv4()}
-                        removeHook={removeOmnibox}
-                      />
-                    ))
-                }
+          omniboxs.map((omnibox) => (
+            <Row
+              hook={omnibox}
+              key={uuidv4()}
+              removeHook={removeOmnibox}
+            />
+          ))
+        }
       </div>
     </>
   );

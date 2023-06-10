@@ -43,6 +43,8 @@ function putSetting(config) {
   });
 }
 
+window.getValue = getValue;
+
 export {
   getValue, setValue, getSettings, putSetting,
 };

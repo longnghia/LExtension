@@ -52,3 +52,12 @@
 [contenteditable] {
     outline: 0px solid transparent;
 }
+
+.no-resize {
+    resize: none;
+}
+
+.no-border {
+    border: none;
+    outline: none;
+}

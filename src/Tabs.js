@@ -70,6 +70,12 @@ function openUrl(link, command) {
   });
 }
 
+function updateUrl(url) {
+  browser.tabs.update({
+    url,
+  });
+}
+
 function openLink(href, active = false) {
   browser.tabs.query({
     active: true,
@@ -160,9 +166,10 @@ function getCurrentTab() {
       currentWindow: true,
     }, (tabs) => {
       if (tabs[0]) {
-        return resolve(tabs[0]);
+        resolve(tabs[0]);
+      } else {
+        reject(new Error('[tabs] No tabs found'));
       }
-      resolve();
     });
   });
 }
@@ -192,4 +199,5 @@ export {
   getCurrentTab,
   executeScript,
   reload,
+  updateUrl,
 };

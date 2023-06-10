@@ -1,5 +1,6 @@
 import { DBKey } from '../Database';
 import { getValue } from '../Storage';
+import { openLink, updateUrl } from '../Tabs';
 
 const dbName = DBKey.omniboxs;
 
@@ -21,19 +22,20 @@ browser.omnibox.onInputEntered.addListener((text) => {
   getValue(dbName)
     .then(({ omniboxs }) => {
       console.log('[omniboxs] getValue', omniboxs);
-      if (omniboxs) {
-        omniboxs.some((box) => {
-          if (box.src === src && box.active === true) {
-            newURL = box.des;
-            console.log('[omniboxs] found', src, newURL);
-            return true;
-          }
-          return false;
-        });
-      }
-
-      browser.tabs.update({
-        url: newURL,
+      if (!omniboxs) return
+      omniboxs.some((box) => {
+        if (box.src === src && box.active === true) {
+          const desUrls = box.des.split(/\s+/);
+          desUrls.forEach((url, index) => {
+            if (index === 0)
+              updateUrl(url)
+            else
+              openLink(url)
+          })
+          console.log('[omniboxs] found', src, desUrls);
+          return true;
+        }
+        return false;
       });
     })
     .catch((err) => console.error('[omnibox] onInputEntered', err));

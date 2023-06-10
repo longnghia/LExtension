@@ -45,8 +45,8 @@ function Hook() {
       const hookActive = hookEle.querySelector('.data-active input');
 
       const hook = {
-        src: hookSrc.textContent.trim(),
-        des: hookDes.textContent.trim(),
+        src: hookSrc.value.trim(),
+        des: hookDes.value.trim(),
         active: hookActive.checked,
       };
       if (hook.src && hook.des) { newHooks.push(hook); }
