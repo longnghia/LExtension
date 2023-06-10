@@ -12,7 +12,6 @@ import { getValue, setValue, putSetting } from '../Storage';
 import toast from '../Toast';
 
 function Hook() {
-  const [loading, setLoading] = useState(true);
   const [hooks, setHooks] = useState([]);
   const [db, setDb] = useState({});
   const [settings, setSettings] = useState({});
@@ -31,7 +30,6 @@ function Hook() {
   async function getHooks() {
     const storage = await getValue();
     console.log('[getHooks]', storage[dbName]);
-    setLoading(false);
     if (storage[dbName]) {
       setDb(storage);
       setHooks(storage[dbName]);

@@ -1,10 +1,21 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PropTypes from 'prop-types';
+
+HookRow.propTypes = {
+  hook: {},
+  removeHook: PropTypes.func,
+};
+
+HookRow.defaultProps = {
+  hook: {},
+  removeHook: () => {},
+};
 
 export default function HookRow({
-  hook, removeHook, index, setHooks,
+  hook, removeHook,
 }) {
   const { src, des, active: defaultActive } = hook;
 
