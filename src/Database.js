@@ -7,6 +7,7 @@ const defaultDB = {
   ],
   omniboxs: [
     {
+      active: true,
       src: 'ios',
       des: 'https://github.com/search?o=desc&q=stars%3A%3E%3D20+fork%3Atrue+language%3Aswift&s=updated&type=Repositories',
     },
@@ -23,7 +24,7 @@ const defaultDB = {
   settings: {
     hook: {
       active: true,
-      logging: true,
+      logging: false,
     },
   },
 };

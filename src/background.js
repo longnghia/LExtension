@@ -2,6 +2,7 @@ import {
   saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, reload as reloadTab,
 } from './Tabs';
 import { gotoHook } from './Hooks/background';
+import gotoOmnibox from './omnibox/background';
 import defaultDB from './Database';
 
 const TAG = '[Background]';
@@ -21,6 +22,19 @@ browser.contextMenus.create({
   icons: {
     16: '../../images/hook.png',
     32: '../../images/hook.png',
+  },
+});
+
+// hard reload
+
+browser.contextMenus.create({
+  id: 'omnibox',
+  title: 'Omnibox',
+  contexts: ['browser_action'],
+  onclick: gotoOmnibox,
+  icons: {
+    16: '../../images/boxes.png',
+    32: '../../images/boxes.png',
   },
 });
 
@@ -83,34 +97,11 @@ browser.storage.local.get().then((storage) => {
     console.log('[init hook ] ', { hooks: defaultDB.hooks });
     browser.storage.local.set({ hooks: defaultDB.hooks });
   }
-});
 
-// Omnibox
-
-browser.omnibox.setDefaultSuggestion({
-  description: `Search:
-      (e.g. "android" | "ios")`,
-});
-
-browser.omnibox.onInputEntered.addListener((text) => {
-  let newURL = 'https://google.com';
-  const src = text.trim();
-  browser.storage.local.get().then((data) => {
-    if (data && data.omniboxs) {
-      data.omniboxs.some((box) => {
-        if (box.src === src) {
-          newURL = box.des;
-          console.log(`${TAG} found`, src, newURL);
-          return true;
-        }
-        return false;
-      });
-    }
-
-    browser.tabs.update({
-      url: newURL,
-    });
-  });
+  if (!storage.settings?.length) {
+    console.log('[init settings ] ', { settings: defaultDB.settings });
+    browser.storage.local.set({ settings: defaultDB.settings });
+  }
 });
 
 // let db = { "read-later": [] }

@@ -3,18 +3,19 @@ import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
+import './style.css';
 
-HookRow.propTypes = {
+Row.propTypes = {
   hook: {},
   removeHook: PropTypes.func,
 };
 
-HookRow.defaultProps = {
+Row.defaultProps = {
   hook: {},
-  removeHook: () => {},
+  removeHook: () => { },
 };
 
-export default function HookRow({
+export default function Row({
   hook, removeHook,
 }) {
   const { src, des, active: defaultActive } = hook;
@@ -27,7 +28,6 @@ export default function HookRow({
     setTimeout(() => {
       removeHook(hook);
     }, 500);
-    // container && hookRow.addEventListener("animationend", function () {});
   };
 
   const toggleActive = () => {
@@ -35,12 +35,12 @@ export default function HookRow({
   };
   console.log('[row]', src, des, defaultActive);
   return (
-    <div className={removing ? 'hook removing' : 'hook'}>
-      <div className="hook-src" contentEditable="true">{src}</div>
-      <div className="hook-des" contentEditable="true">{des}</div>
-      <Switch className="hook-active" checked={active} onChange={toggleActive} />
+    <div className={removing ? 'data removing' : 'data'}>
+      <div className="data-src" contentEditable="true">{src}</div>
+      <div className="data-des" contentEditable="true">{des}</div>
+      <Switch className="data-active" checked={active} onChange={toggleActive} />
       <IconButton
-        className="hook-remove"
+        className="data-remove"
         onClick={onClickRemoveHook}
         aria-label="delete"
         disabled={removing}

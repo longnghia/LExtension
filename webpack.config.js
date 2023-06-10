@@ -15,6 +15,7 @@ module.exports = {
     popup: 'popup.js',
     content: 'content.js',
     hook: 'Hooks/Hook.js',
+    omnibox: 'omnibox/index.js',
   },
   output: {
     // This copies each source entry into the extension dist folder named

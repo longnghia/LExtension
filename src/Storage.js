@@ -7,23 +7,26 @@ function getValue(key = null) {
     browser.storage.local.get(key, (val) => {
       if (val) {
         resolve(val);
+      } else {
+        reject(new Error('Database null'));
       }
-      resolve();
     });
   });
 }
 
 function setValue(obj) {
+  console.log('[setValue]', obj);
   return new Promise((resolve, reject) => {
-    if (typeof chrome !== 'undefined' && browser.storage && browser.storage.local) {
+    if (typeof browser !== 'undefined' && browser.storage && browser.storage.local) {
       browser.storage.local.set(
         obj,
         () => {
           resolve('[setValue] success');
         },
       );
+    } else {
+      reject(new Error('[Storage] No database found'));
     }
-    reject(new Error('[Storage] No database found'));
   });
 }
 
