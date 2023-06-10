@@ -28,7 +28,7 @@ function updateChange(changes, area) {
 
 browser.storage.onChanged.addListener(updateChange);
 
-chrome.runtime.onMessage.addListener((message, messageSender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, messageSender, sendResponse) => {
   if (message.action && message.action === 'SAVE_HOOKS') {
     console.log('[received], SAVE_HOOKS');
     updateDatabase(message.payload);
@@ -43,7 +43,7 @@ function addBeforeRequestListener() {
     console.log('database null!');
     return;
   }
-  chrome.webRequest.onBeforeRequest.addListener(
+  browser.webRequest.onBeforeRequest.addListener(
     onBeforeRequestListener,
     {
       urls: ['<all_urls>'],
@@ -54,7 +54,7 @@ function addBeforeRequestListener() {
 
 function removeBeforeRequestListener() {
   console.log('[removeBeforeRequestListener]');
-  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestListener);
+  browser.webRequest.onBeforeRequest.removeListener(onBeforeRequestListener);
 }
 
 function onBeforeRequestListener(info) {
@@ -89,7 +89,7 @@ function onBeforeRequestListener(info) {
 }
 
 // browserAction
-chrome.browserAction.onClicked.addListener(toggleEnabled);
+browser.browserAction.onClicked.addListener(toggleEnabled);
 
 function hasUrl(url) {
   if (db) {
@@ -105,13 +105,13 @@ function hasUrl(url) {
 
 function getChromeUrl(link) {
   if (link.startsWith('http')) { return link; }
-  return chrome.extension.getURL(link);
+  return browser.extension.getURL(link);
 }
 
 function toggleEnabled() {
   settings.hook.active = !settings.hook.active;
   localStorage.enabled = settings.hook.active;
-  chrome.browserAction.setIcon({
+  browser.browserAction.setIcon({
     path: settings.hook.active ? '../icon/icons8-hook-100-color.png' : '../icon/icons8-hook-100.png',
   });
 }
@@ -157,7 +157,7 @@ function gotoHook() {
 }
 
 function updateDatabase(newDb) {
-  chrome.storage.local.set(
+  browser.storage.local.set(
     newDb,
     () => {
       console.log('[hook] update database successfully!', newDb);

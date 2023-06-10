@@ -26,10 +26,10 @@ jobs:
         with:
           node-version: '18'
       - name: install dependency
-        run: npm install
+        run: yarn
       # Create Firefox artifacts
       - name: Create Firefox artifacts
-        run: npm run release
+        run: yarn release
       - uses: actions/upload-artifact@v3
         with:
           name: LExtension

@@ -2,13 +2,10 @@ import { getValue, setValue } from '../Storage';
 
 let db = { hooks: [] };
 
-let submitBtn; let toast; let addBtn; let
-  hooksContainer;
-
-submitBtn = document.getElementById('submit');
-toast = document.getElementById('toast');
-addBtn = document.getElementById('add');
-hooksContainer = document.getElementById('hooks-container');
+const submitBtn = document.getElementById('submit');
+const toast = document.getElementById('toast');
+const addBtn = document.getElementById('add');
+const hooksContainer = document.getElementById('hooks-container');
 
 getValue().then((data) => {
   db = data;
@@ -87,13 +84,13 @@ function savehooks(event) {
   }
   console.log('[new db]', newHooks);
   db.hooks = newHooks,
-  chrome.storage.local.clear(() => {
-    if (chrome.runtime.lastError) {
+  browser.storage.local.clear(() => {
+    if (browser.runtime.lastError) {
       setToast('Save failed!!', 2000);
     } else {
       setValue(db).then((res) => console.log(res));
 
-      chrome.runtime.sendMessage({
+      browser.runtime.sendMessage({
         action: 'SAVE_HOOKS',
         payload: db,
       });

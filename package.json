@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "watch": "npm run build -- -w",
-    "start": "web-ext run -s extension",
+    "build:watch": "yarn build -- -w",
+    "dev": "yarn build && concurrently \"yarn web-run\" \"yarn build:watch\"",
+    "web-run": "web-ext run -s extension",
     "release": "webpack && web-ext build -s extension/ --overwrite-dest"
   },
   "author": "ln",

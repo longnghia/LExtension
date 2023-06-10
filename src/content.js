@@ -1,7 +1,7 @@
 /* openselected */
 browser.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
-    if (message?.action == 'open-selected') {
+    if (message?.action === 'open-selected') {
       const link = window.getSelection().toString();
       console.log('[OpenSelected]', link);
       sendResponse({
@@ -9,6 +9,7 @@ browser.runtime.onMessage.addListener(
       });
       return true;
     }
+    return false;
   },
 );
 

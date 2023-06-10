@@ -84,10 +84,9 @@ function openLink(href, active = false) {
 }
 
 function isURL(string) {
-  let url;
-
   try {
-    url = new URL(string);
+    // eslint-disable-next-line no-unused-vars
+    const url = new URL(string);
   } catch (e) {
     // console.error(e)
     return false;
@@ -105,7 +104,7 @@ function openSelected(command) {
       action: 'open-selected',
       command,
     }, (response) => {
-      response && response.link && openUrl(response.link, command);
+      if (response && response.link) openUrl(response.link, command);
     });
   });
 }
@@ -114,7 +113,7 @@ function openSelected(command) {
 function isInCollection(tab) {
   browser.storage.local.get(null, (data) => {
     if (data.collection) {
-      for (let i = 0; i < data.collection.length; i++) {
+      for (let i = 0; i < data.collection.length; i += 1) {
         const url = data.collection[i];
         if (tab.url.startsWith(url)) {
           // audio.play()
@@ -129,15 +128,28 @@ function isInCollection(tab) {
   });
 }
 
-function doFakeCtrW() {
+async function doFakeCtrW() {
   console.log('ctr W!');
-  browser.tabs.query({
+  const data = await browser.storage.local.get(null);
+  const { collection } = data;
+  if (!collection) {
+    console.log('[ctrw]', 'empty collection');
+    return;
+  }
+  const tabs = await browser.tabs.query({
     highlighted: true,
     currentWindow: true,
-  }, (tabs) => {
-    for (tab of tabs) {
-      isInCollection(tab);
-    }
+  });
+  tabs.forEach((tab) => {
+    const arr = collection.some((url) => {
+      if (tab.url.startsWith(url)) {
+        // audio.play()
+        console.log('not close postman ok :3');
+        return true;
+      }
+      return false;
+    });
+    if (!arr.length) browser.tabs.remove(tab.id);
   });
 }
 
@@ -169,5 +181,15 @@ function reload(hard = false) {
 }
 
 export {
-  saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, openLink, createTab, getCurrentTab, executeScript, reload,
+  saveTabs,
+  dublicateTab,
+  save2Json,
+  openUrl,
+  openSelected,
+  doFakeCtrW,
+  openLink,
+  createTab,
+  getCurrentTab,
+  executeScript,
+  reload,
 };

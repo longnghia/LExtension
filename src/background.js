@@ -38,7 +38,7 @@ browser.contextMenus.create({
 
 // hard reload
 
-chrome.contextMenus.create({
+browser.contextMenus.create({
   id: 'reload',
   title: 'Hard reload',
   contexts: ['browser_action'],
@@ -94,16 +94,20 @@ browser.omnibox.setDefaultSuggestion({
 
 browser.omnibox.onInputEntered.addListener((text) => {
   let newURL = 'https://google.com';
-  text = text.trim();
+  const src = text.trim();
   browser.storage.local.get().then((data) => {
-    data && data.omniboxs && data.omniboxs.forEach((box) => {
-      if (box.src == text) {
-        newURL = box.des;
-        console.log(`${TAG} found`, text), newURL;
-      }
-    });
+    if (data && data.omniboxs) {
+      data.omniboxs.some((box) => {
+        if (box.src === src) {
+          newURL = box.des;
+          console.log(`${TAG} found`, src, newURL);
+          return true;
+        }
+        return false;
+      });
+    }
 
-    chrome.tabs.update({
+    browser.tabs.update({
       url: newURL,
     });
   });
@@ -121,11 +125,11 @@ function logStorageChange(changes, area) {
 
   const changedItems = Object.keys(changes);
 
-  for (const item of changedItems) {
+  changedItems.forEach((item) => {
     console.log(`${item} has changed:`);
     console.log('Old value: ', changes[item].oldValue);
     console.log('New value: ', changes[item].newValue);
-  }
+  });
 }
 
 browser.storage.onChanged.addListener(logStorageChange);
@@ -144,23 +148,24 @@ browser.storage.local.get().then((storage) => {
 
 browser.commands.onCommand.addListener(async (command) => {
   console.log(`${TAG} command= ${command}`);
-
   switch (command) {
     case readLater:
       await savePages();
       break;
-
     case 'logTabs':
       saveTabs();
       break;
     case 'dublicateTab':
       dublicateTab();
       break;
-    case 'open-in-bg' || command == 'open-in-fg':
+    case 'open-in-bg' || command === 'open-in-fg':
       openSelected(command);
       break;
     case 'fakeCtrlW':
       doFakeCtrW();
+      break;
+    case 'save2JSON':
+      save2Json();
       break;
     default:
       break;
@@ -186,7 +191,7 @@ async function savePages() {
 
     const newTabs = tabs.filter((tab) => !tabExisted(tab));
 
-    if (newTabs.length == 0) {
+    if (newTabs.length === 0) {
       console.log(`${TAG} Tabs exist!`, tabs);
       return;
     }
@@ -215,7 +220,7 @@ function updateBadge(length) {
 }
 
 function tabExisted(newTab) {
-  return db.some((tab) => tab.url == newTab.url);
+  return db.some((tab) => tab.url === newTab.url);
 }
 
 async function getTabsInfo() {
