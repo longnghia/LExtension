@@ -11,8 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab }) {
-
-  console.log(`[SwitchListSecondary] tabs count=`, tabs.length);
+  console.log('[SwitchListSecondary] tabs count=', tabs.length);
 
   const [checked, setChecked] = React.useState(['wifi']);
 
@@ -30,7 +29,7 @@ export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab 
   };
 
   const createListItem = () => {
-    let list = tabs.map((tab, index) => (
+    const list = tabs.map((tab, index) => (
       <ListItem
         divider
       >
@@ -38,20 +37,21 @@ export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab 
           <WifiIcon />
         </ListItemIcon>
         <ListItemText
-          id={"tab-" + index}
+          id={`tab-${index}`}
           primary={tab.title}
-          onClick={(event) => { openAndRemoveTab(event, index) }}
+          onClick={(event) => { openAndRemoveTab(event, index); }}
         />
         <IconButton
           aria-label="delete"
           color="error"
-          onClick={() => { removeTab(index) }}>
+          onClick={() => { removeTab(index); }}
+        >
           <DeleteIcon />
         </IconButton>
       </ListItem>
-    ))
-    return list
-  }
+    ));
+    return list;
+  };
 
   return (
     <List

@@ -1,15 +1,15 @@
 /* openselected */
 browser.runtime.onMessage.addListener(
-    function (message, sender, sendResponse) {
-        if (message?.action == "open-selected") {
-            let link = window.getSelection().toString()
-            console.log("[OpenSelected]",link);
-            sendResponse({
-                link
-            })
-            return true
-        }
+  (message, sender, sendResponse) => {
+    if (message?.action == 'open-selected') {
+      const link = window.getSelection().toString();
+      console.log('[OpenSelected]', link);
+      sendResponse({
+        link,
+      });
+      return true;
     }
+  },
 );
 
 // add cdn
