@@ -5,26 +5,30 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "watch": "npm run build -- -w",
-    "start": "web-ext run -s extension",
+    "build:watch": "yarn build -- -w",
+    "dev": "yarn build && concurrently \"yarn web-run\" \"yarn build:watch\"",
+    "web-run": "web-ext run -s extension",
     "release": "webpack && web-ext build -s extension/ --overwrite-dest"
   },
   "author": "ln",
   "license": "MPL-2.0",
   "dependencies": {
-    "@hot-loader/react-dom": "^17.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-loader": "^4.13.0",
-    "web-ext": "^7.3.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.19.6",
-    "@babel/preset-env": "^7.19.4",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "sweetalert2": "^11.7.3"
+  },
+  "devDependencies": {
+    "@hot-loader/react-dom": "^17.0.2",
+    "web-ext": "^7.3.1",
+    "@types/chrome": "^0.0.237",
+    "@types/firefox-webext-browser": "^111.0.1",
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
     "babel-loader": "^9.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^7.0.0",

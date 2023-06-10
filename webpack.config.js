@@ -3,7 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-console.log(path.join(__dirname, 'node_modules'))
+console.log(path.join(__dirname, 'node_modules'));
 
 module.exports = {
   entry: {
@@ -13,7 +13,7 @@ module.exports = {
     background: 'background.js',
     popup: 'popup.js',
     content: 'content.js',
-    hook: 'Hooks/Hook.js'
+    hook: 'Hooks/Hook.js',
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -29,16 +29,16 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: [
-            ['@babel/preset-env', { targets: "defaults" }]
-          ]
-        }
-      }
+            ['@babel/preset-env', { targets: 'defaults' }],
+          ],
+        },
+      },
     },
     {
       exclude: [path.join(__dirname, 'node_modules')],
       test: /\.css$/,
       use: ['style-loader', 'css-loader'],
-    },]
+    }],
   },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
@@ -58,5 +58,5 @@ module.exports = {
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.
   devtool: 'source-map',
-  mode: 'production'
+  mode: 'production',
 };

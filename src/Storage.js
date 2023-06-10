@@ -1,12 +1,12 @@
 function getValue(key = null) {
   return new Promise((resolve, reject) => {
-    if (!chrome || !chrome.storage || !chrome.storage.local) {
-      return reject(new Error('Storage required'));
+    if (!browser || !browser.storage || !browser.storage.local) {
+      reject(new Error('Storage required'));
     }
 
-    chrome.storage.local.get(key, (val) => {
+    browser.storage.local.get(key, (val) => {
       if (val) {
-        return resolve(val);
+        resolve(val);
       }
       resolve();
     });
@@ -15,14 +15,15 @@ function getValue(key = null) {
 
 function setValue(obj) {
   return new Promise((resolve, reject) => {
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set(
+    if (typeof chrome !== 'undefined' && browser.storage && browser.storage.local) {
+      browser.storage.local.set(
         obj,
         () => {
           resolve('[setValue] success');
         },
       );
     }
+    reject(new Error('[Storage] No database found'));
   });
 }
 
