@@ -3,7 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-console.log(path.join(__dirname, '../node_modules'))
+console.log(path.join(__dirname, 'node_modules'))
 
 module.exports = {
   entry: {
@@ -12,7 +12,8 @@ module.exports = {
     // For example, you could add a background script like:
     background: 'background.js',
     popup: 'popup.js',
-    content: 'content.js'
+    content: 'content.js',
+    hook: 'Hooks/Hook.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -22,7 +23,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      exclude: [path.join(__dirname, '../node_modules')],
+      exclude: [path.join(__dirname, 'node_modules')],
       test: /\.js$/,
       use: {
         loader: 'babel-loader',
@@ -32,14 +33,19 @@ module.exports = {
           ]
         }
       }
-    }]
+    },
+    {
+      exclude: [path.join(__dirname, 'node_modules')],
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader'],
+    },]
   },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
     extensions: ['.js', '.jsx'],
     modules: [
       path.join(__dirname, 'src'),
-      '../node_modules',
+      'node_modules',
     ],
   },
   plugins: [

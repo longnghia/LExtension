@@ -1,12 +1,52 @@
-import { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW } from "./Tabs"
-
+import { saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, reload as reloadTab } from "./Tabs"
+import { gotoHook } from './Hooks/background'
+import defaultDB from "./Database";
 const TAG = "[Background]"
 
 browser.browserAction.setBadgeBackgroundColor({ 'color': 'blue' });
 
-// let gettingActiveTab = browser.tabs.query({ active: true, currentWindow: true });
-// let gettingSelectedTab = browser.tabs.query({ highlighted: true, currentWindow: true });
+// put in background so contextMenus is created once only.
+// hook script
+browser.contextMenus.create({
+    id: 'hook',
+    title: "Hook-Script",
+    contexts: ["browser_action"],
+    onclick: function () {
+        console.log("[hook] goto hook")
+        gotoHook()
+    },
+    "icons": {
+        "16": "../../images/hook.png",
+        "32": "../../images/hook.png"
+    }
+});
 
+// backgroundURL
+browser.contextMenus.create({
+    id: 'debug',
+    title: "Debug",
+    contexts: ["browser_action"],
+    onclick: onClickDebug,
+    "icons": {
+        "16": "../../images/debug.png",
+        "32": "../../images/debug.png"
+    }
+});
+
+// hard reload
+
+chrome.contextMenus.create({
+    id: 'reload',
+    title: "Hard reload",
+    contexts: ["browser_action"],
+    onclick: function () {
+        reloadTab()
+    },
+    "icons": {
+        "16": "../../images/reload.png",
+        "32": "../../images/reload.png"
+    }
+});
 
 let readLater = "read-later"
 let isReady = false
@@ -35,6 +75,11 @@ browser.storage.local.get().then(storage => {
     if (!storage["background"]?.length) {
         browser.storage.local.set({ "background": ["mylivewallpapers.com-Yellow-Space-Suit-Girl.webm"] })
     }
+
+    if (!storage["hooks"]?.length) {
+        console.log("[init hook ] ", { hooks: defaultDB.hooks })
+        browser.storage.local.set({ hooks: defaultDB.hooks })
+    }
 })
 
 // Omnibox
@@ -49,7 +94,7 @@ browser.omnibox.onInputEntered.addListener(function (text) {
     text = text.trim()
     browser.storage.local.get().then(data => {
         data && data.omniboxs && data.omniboxs.forEach(box => {
-            if (box.src == text){
+            if (box.src == text) {
                 newURL = box.des;
                 console.log(`${TAG} found`, text), newURL;
             }
@@ -192,6 +237,9 @@ function parseTabInfo(tab) {
     }
 }
 
+function onClickDebug() {
+    openUrl(browser.runtime.getURL('_generated_background_page.html'))
+}
 /*
 read-later: [
     {url:title:date},
