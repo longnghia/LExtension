@@ -1,12 +1,12 @@
 import React from 'react';
 import { Switch, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TextareaAutosize } from '@mui/base'
+import { TextareaAutosize } from '@mui/base';
 import PropTypes from 'prop-types';
 import './style.css';
 
 Row.propTypes = {
-  hook: {},
+  hook: { src: PropTypes.string, des: PropTypes.string, active: PropTypes.bool },
   removeHook: PropTypes.func,
 };
 

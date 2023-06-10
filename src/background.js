@@ -3,7 +3,9 @@ import {
 } from './Tabs';
 import { gotoHook } from './Hooks/background';
 import gotoOmnibox from './omnibox/background';
-import defaultDB from './Database';
+import defaultDB, { DBKey } from './Database';
+import { Command } from './Const';
+import { getValue } from './Storage';
 
 const TAG = '[Background]';
 
@@ -65,42 +67,35 @@ browser.contextMenus.create({
   },
 });
 
-const readLater = 'read-later';
 let isReady = false;
 
 // check and set database
 browser.storage.local.get().then((storage) => {
-  if (!storage[readLater]?.length) {
-    browser.storage.local.set({ 'read-later': [] });
+  if (!storage[DBKey.readlater]?.length) {
+    browser.storage.local.set({ [DBKey.readlater]: defaultDB.read_laters });
   }
 
-  if (!storage.collection?.length) {
-    browser.storage.local.set({ collection: ['https://github.dev'] });
+  if (!storage[DBKey.collection]?.length) {
+    browser.storage.local.set({ [DBKey.collection]: defaultDB.collection });
   }
 
-  if (!storage.omniboxs?.length) {
-    browser.storage.local.set({
-      omniboxs: [
-        {
-          src: 'ios',
-          des: 'https://github.com/search?o=desc&q=stars%3A%3E%3D20+fork%3Atrue+language%3Aswift&s=updated&type=Repositories',
-        },
-      ],
-    });
+  if (!storage[DBKey.background]?.length) {
+    browser.storage.local.set({ [DBKey.background]: defaultDB.background });
   }
 
-  if (!storage.background?.length) {
-    browser.storage.local.set({ background: ['mylivewallpapers.com-Yellow-Space-Suit-Girl.webm'] });
+  if (!storage[DBKey.hooks]?.length) {
+    console.log('[init hook ] ', { [DBKey.hooks]: defaultDB.hooks });
+    browser.storage.local.set({ [DBKey.hooks]: defaultDB.hooks });
   }
 
-  if (!storage.hooks?.length) {
-    console.log('[init hook ] ', { hooks: defaultDB.hooks });
-    browser.storage.local.set({ hooks: defaultDB.hooks });
+  if (!storage[DBKey.settings]?.length) {
+    console.log('[init settings ] ', { [DBKey.settings]: defaultDB.settings });
+    browser.storage.local.set({ [DBKey.settings]: defaultDB.settings });
   }
 
-  if (!storage.settings?.length) {
-    console.log('[init settings ] ', { settings: defaultDB.settings });
-    browser.storage.local.set({ settings: defaultDB.settings });
+  if (!storage[DBKey.omniboxs]?.length) {
+    console.log('[init omnibox ] ', { [DBKey.omniboxs]: defaultDB.omniboxs });
+    browser.storage.local.set({ [DBKey.omniboxs]: defaultDB.omniboxs });
   }
 });
 
@@ -130,17 +125,15 @@ browser.storage.local.get().then((storage) => {
   isReady = true;
   setActionIcon();
 
-  db = storage[readLater];
-
-  console.log(`${TAG} DB Loaded`, db);
-
+  console.log(`${TAG} DB Loaded`, storage);
+  db = storage[DBKey.readlater];
   browser.browserAction.setBadgeText({ text: `${db.length}` });
 });
 
 browser.commands.onCommand.addListener(async (command) => {
   console.log(`${TAG} command= ${command}`);
   switch (command) {
-    case readLater:
+    case Command.save_read_laters:
       await savePages();
       break;
     case 'logTabs':
@@ -178,7 +171,7 @@ async function savePages() {
   browser.storage.local.get().then((storage) => {
     console.log(`${TAG} savePage`, storage);
 
-    db = storage[readLater];
+    db = storage[DBKey.readlater];
 
     const newTabs = tabs.filter((tab) => !tabExisted(tab));
 
@@ -191,7 +184,7 @@ async function savePages() {
       db.push(tab);
     });
 
-    browser.storage.local.set({ 'read-later': db }).then(() => {
+    browser.storage.local.set({ [DBKey.readlater]: db }).then(() => {
       console.log(`${TAG} SUCCESS saved ${newTabs.length} tabs.`);
       updateBadge(db.length);
     }, onError);
@@ -203,9 +196,9 @@ function onError(err) {
 }
 
 function updateBadge(length) {
-  browser.storage.local.get().then((storage) => {
+  getValue().then((storage) => {
     browser.browserAction.setBadgeText({
-      text: `${length || storage[readLater].length}`,
+      text: `${length || storage[DBKey.readlater].length}`,
     });
   });
 }

@@ -1,9 +1,5 @@
 const Command = {
-  readLater: 'read-later',
-};
-
-const Storage = {
-  readLater: 'read-later',
+  save_read_laters: 'save_read_laters',
 };
 
 const LocalStorage = {
@@ -13,4 +9,4 @@ const LocalStorage = {
   },
 };
 
-export { Command, Storage, LocalStorage };
+export { Command, LocalStorage };

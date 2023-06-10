@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { DBKey } from './Database';
 import PrimarySearchAppBar from './SearchBar';
 import SwitchListSecondary from './SwitchListSecondary';
 import { openLink } from './Tabs';
@@ -31,8 +32,8 @@ class Popup extends React.Component {
   getTabs = function () {
     browser.storage.local.get().then((storage) => {
       this.setState({ loading: false });
-      if (storage['read-later']) {
-        this.setState({ tabs: storage['read-later'].reverse() });
+      if (storage[DBKey.readlater]) {
+        this.setState({ tabs: storage[DBKey.readlater].reverse() });
         this.log('tabs=', this.state.tabs);
       }
     });
@@ -59,7 +60,7 @@ class Popup extends React.Component {
     });
 
     browser.storage.local.get().then((storage) => {
-      const db = storage['read-later'].filter((tab) => tab.url != item.url);
+      const db = storage[DBKey.readlater].filter((tab) => tab.url != item.url);
       this.setStorageAndUpdateBadge(db);
     });
   };
@@ -73,7 +74,7 @@ class Popup extends React.Component {
 
   setStorageAndUpdateBadge(newTabs) {
     browser.storage.local.set({
-      'read-later': newTabs,
+      [DBKey.readlater]: newTabs,
     }).then(() => {
       this.log('set storage success', newTabs.length);
       this.updateBadge(newTabs.length);
@@ -107,10 +108,10 @@ class Popup extends React.Component {
     browser.storage.local.get().then((storage) => {
       console.log('this', this);
       let db;
-      if (query == '') {
-        db = storage['read-later'];
+      if (query === '') {
+        db = storage[DBKey.readlater];
       } else {
-        db = storage['read-later'].filter((tab) => this.queryTab(tab, query));
+        db = storage[DBKey.readlater].filter((tab) => this.queryTab(tab, query));
       }
       this.log('count', db.length);
       this.setState({ tabs: db });

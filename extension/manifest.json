@@ -56,7 +56,7 @@
   ],
 
   "commands": {
-    "read-later": {
+    "save_read_laters": {
       "suggested_key": {
         "default": "Ctrl+B",
         "mac": "MacCtrl+B"
