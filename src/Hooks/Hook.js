@@ -4,15 +4,13 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { v4 as uuidv4 } from 'uuid';
-import './style.css';
 import { Switch, Tooltip } from '@mui/material';
-import HookRow from './HookRow';
+import Row from '../components/Row';
 import { DBKey } from '../Database';
 import { getValue, setValue, putSetting } from '../Storage';
 import toast from '../Toast';
 
 function Hook() {
-  const [loading, setLoading] = useState(true);
   const [hooks, setHooks] = useState([]);
   const [db, setDb] = useState({});
   const [settings, setSettings] = useState({});
@@ -31,7 +29,6 @@ function Hook() {
   async function getHooks() {
     const storage = await getValue();
     console.log('[getHooks]', storage[dbName]);
-    setLoading(false);
     if (storage[dbName]) {
       setDb(storage);
       setHooks(storage[dbName]);
@@ -39,17 +36,17 @@ function Hook() {
     }
   }
   const onSaveAll = () => {
-    const hookEles = document.getElementsByClassName('hook');
+    const hookEles = document.getElementsByClassName('data');
     const newHooks = [];
     for (let i = 0; i < hookEles.length; i += 1) {
       const hookEle = hookEles[i];
-      const hookSrc = hookEle.querySelector('.hook-src');
-      const hookDes = hookEle.querySelector('.hook-des');
-      const hookActive = hookEle.querySelector('.hook-active input');
+      const hookSrc = hookEle.querySelector('.data-src');
+      const hookDes = hookEle.querySelector('.data-des');
+      const hookActive = hookEle.querySelector('.data-active input');
 
       const hook = {
-        src: hookSrc.textContent.trim(),
-        des: hookDes.textContent.trim(),
+        src: hookSrc.value.trim(),
+        des: hookDes.value.trim(),
         active: hookActive.checked,
       };
       if (hook.src && hook.des) { newHooks.push(hook); }
@@ -142,7 +139,7 @@ function Hook() {
       <div id="hooks-container">
         {
           hooks.map((hook) => (
-            <HookRow
+            <Row
               hook={hook}
               key={uuidv4()}
               removeHook={removeHook}

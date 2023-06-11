@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const WebpackBar = require('webpackbar');
 
 console.log(path.join(__dirname, 'node_modules'));
 
@@ -14,6 +15,7 @@ module.exports = {
     popup: 'popup.js',
     content: 'content.js',
     hook: 'Hooks/Hook.js',
+    omnibox: 'omnibox/index.js',
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -54,6 +56,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
+    new WebpackBar(),
   ],
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.

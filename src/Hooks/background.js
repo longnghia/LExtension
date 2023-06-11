@@ -82,8 +82,6 @@ function onBeforeRequestListener(info) {
         redirectUrl: getChromeUrl(target),
       };
     }
-    // continue the request
-    // console.log("[onBeforeRequestListener] continue " + info.url);
     return {};
   }
 }

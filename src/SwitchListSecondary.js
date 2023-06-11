@@ -4,9 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import Switch from '@mui/material/Switch';
 import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -59,34 +57,6 @@ export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab 
       subheader={<ListSubheader>Settings</ListSubheader>}
     >
       {createListItem()}
-      {/* <ListItem>
-        <ListItemIcon>
-          <WifiIcon />
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-wifi" primary="Wi-Fi" />
-        <Switch
-          edge="end"
-          onChange={handleToggle('wifi')}
-          checked={checked.indexOf('wifi') !== -1}
-          inputProps={{
-            'aria-labelledby': 'switch-list-label-wifi',
-          }}
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemIcon>
-          <BluetoothIcon />
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-bluetooth" primary="Bluetooth" />
-        <Switch
-          edge="end"
-          onChange={handleToggle('bluetooth')}
-          checked={checked.indexOf('bluetooth') !== -1}
-          inputProps={{
-            'aria-labelledby': 'switch-list-label-bluetooth',
-          }}
-        />
-      </ListItem> */}
     </List>
   );
 }

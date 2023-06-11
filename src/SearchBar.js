@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import PropTypes from 'prop-types';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,6 +56,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
+PrimarySearchAppBar.propTypes = {
+  onQuery: PropTypes.func.isRequired,
+};
 
 export default function PrimarySearchAppBar({ onQuery }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
