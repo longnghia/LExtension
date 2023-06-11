@@ -1,5 +1,6 @@
 const Command = {
   save_read_laters: 'save_read_laters',
+  open_selected: 'open-selected',
 };
 
 const LocalStorage = {
