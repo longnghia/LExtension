@@ -1,3 +1,5 @@
+import { Command } from './Const';
+
 /* tabs */
 function saveTabs() {
   browser.tabs.query({
@@ -107,7 +109,7 @@ function openSelected(command) {
     currentWindow: true,
   }, (tabs) => {
     browser.tabs.sendMessage(tabs[0].id, {
-      action: 'open-selected',
+      action: Command.open_selected,
       command,
     }, (response) => {
       if (response && response.link) openUrl(response.link, command);
