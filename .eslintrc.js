@@ -20,6 +20,7 @@ module.exports = {
     'no-console': 0,
     'react/jsx-filename-extension': 0,
     'no-use-before-define': ['error', { functions: false }],
+    'no-unused-vars': 'warn',
     // 'import/no-extraneous-dependencies': 0,
   },
   globals: {
