@@ -7,7 +7,7 @@
     "build": "webpack",
     "build:watch": "yarn build -- -w",
     "dev": "yarn build && concurrently \"yarn web-run\" \"yarn build:watch\"",
-    "web-run": "web-ext run -s extension",
+    "web-run": "web-ext run -s extension --start-url https://addons.mozilla.org/firefox/addon/ublock-origin/",
     "release": "webpack && web-ext build -s extension/ --overwrite-dest",
     "lint": "eslint --fix ."
   },

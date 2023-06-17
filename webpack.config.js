@@ -14,7 +14,7 @@ module.exports = {
     background: 'background.js',
     popup: 'popup.js',
     content: 'content.js',
-    hook: 'Hooks/Hook.js',
+    hook: 'Hooks/index.js',
     omnibox: 'omnibox/index.js',
   },
   output: {
