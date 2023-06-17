@@ -16,49 +16,53 @@ let pre;
 
 function start() {
   const { pathname } = window.location;
-  pre = document.querySelector('pre');
   const head = document.head || document.body;
 
-  if (!pre) {
-    console.error('[SF] No <pre> tag found');
+  if (!(pathname.endsWith('.js') || pathname.endsWith('.css'))) {
     return;
   }
   if (pathname.endsWith('user.js')) {
     console.log('[SF] Not apply on userscript');
-  } else if ((pathname.endsWith('.js') || pathname.endsWith('.css'))) {
-    createEle(head, {
-      name: 'style',
-      attr: {
-        id: 'sfcss',
-      },
-      content: '.hidden{display:none}',
-    });
-
-    codeMirror = createEle(document.body, {
-      name: 'div',
-      attr: {
-        id: 'container',
-        class: 'hidden',
-      },
-    });
-
-    const btnFormat = createEle(null, {
-      name: 'button',
-      content: 'Execute',
-      class: 'sfbutton-format',
-    });
-    document.body.insertBefore(btnFormat, pre);
-    addMirrow(js_beautify(pre.textContent));
-    btnFormat.addEventListener('click', () => {
-      toggleMirror();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (isCtrlKey(e) && e.key === 'Enter') {
-        btnFormat.click();
-      }
-    });
+    return;
   }
+
+  pre = document.querySelector('pre');
+  if (!pre) {
+    console.error('[SF] No <pre> tag found');
+    return;
+  }
+  createEle(head, {
+    name: 'style',
+    attr: {
+      id: 'sfcss',
+    },
+    content: '.hidden{display:none}',
+  });
+
+  codeMirror = createEle(document.body, {
+    name: 'div',
+    attr: {
+      id: 'container',
+      class: 'hidden',
+    },
+  });
+
+  const btnFormat = createEle(null, {
+    name: 'button',
+    content: 'Execute',
+    class: 'sfbutton-format',
+  });
+  document.body.insertBefore(btnFormat, pre);
+  addMirrow(js_beautify(pre.textContent));
+  btnFormat.addEventListener('click', () => {
+    toggleMirror();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (isCtrlKey(e) && e.key === 'Enter') {
+      btnFormat.click();
+    }
+  });
 }
 
 function addMirrow(doc) {
