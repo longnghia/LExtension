@@ -11,6 +11,7 @@ import toast from '../Toast';
 
 function Omnibox() {
   const [omniboxs, setOmniboxs] = useState([]);
+  const [hideBox, setHideBox] = useState(false);
   const dbName = DBKey.omniboxs;
 
   useEffect(() => {
@@ -69,7 +70,9 @@ function Omnibox() {
             onSaveAll();
           }
           break;
-
+        case 'h':
+          setHideBox((hide) => !hide);
+          break;
         default:
           break;
       }
@@ -108,6 +111,7 @@ function Omnibox() {
               hook={omnibox}
               key={uuidv4()}
               removeHook={removeOmnibox}
+              visible={hideBox}
             />
           ))
         }
