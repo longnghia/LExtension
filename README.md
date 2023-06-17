@@ -1,32 +1,32 @@
-# "Image Reference Collector" example built with webpack (and React UI)
+# LExtension
+LExtension includes several tools to surf web with ease ✌️
 
 ## Usage
 
-This example is built using Babel and Webpack, and so the transpiled bundles have to
-be built first:
+- install dependencies: `yarn`
+- run web-ext: `yarn dev`
+- release extension: `yarn release`
 
-you need to change into the example subdirectory and install all
-[NodeJS][nodejs] dependencies with [npm](http://npmjs.com/) or
-[yarn](https://yarnpkg.com/):
+## Features
+![](docs/2023-06-17-15-11-02.png)
+### Readlater
+I'm now ~~lazy~~ busy, save this tab for later read!
+- `ctrl + b` to save hightlighted tabs.
+- ![](docs/2023-06-17-15-06-34.png)
+<br/>
 
-    npm install
+### Hook
+I want to modify this js file 🔁
+- redirect `src` to `des` urls
+- ![](docs/2023-06-17-15-13-25.png)
 
-You can build the extension using:
+</br>
 
-    npm run build
-
-This creates the source bundles for the WebExtension in the `extension` subdirectory, and
-you can manually install the add-on on Firefox by loading the `extension` from the
-"about:debugging#addons" page.
-
-You can also build the sources and start a new Firefox instance with the add-on installed
-in one command:
-
-    npm run start
-
-To start a webpack instance that automatically rebuilds the add-on when
-you change the sources, in another shell window, you can run the following npm script:
-
-    npm run build:watch
-
-While this npm script is running, any time you edit a file, it will be rebuilt automatically.
+### Omnibox
+Fast open stuffs
+- type this: `ee ios`
+- ![](docs/2023-06-17-15-16-41.png)
+## Credits
+Thanks
+- [flaticon](https://www.flaticon.com/)  for providing beautiful icons.
+- [sponsorblock](https://github.com/ajayyy/SponsorBlock)  for developing an awesome extension for usability and reference.
