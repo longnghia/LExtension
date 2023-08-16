@@ -13,9 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import PropTypes from 'prop-types';
+import { gotoPopup } from '../navigation';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -124,13 +126,13 @@ export default function PrimarySearchAppBar({ onChange }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
+      <MenuItem onClick={gotoPopup}>
+        <IconButton size="large" aria-label="open popup page in new tab" color="inherit">
+          <Badge color="error">
+            <OpenInNewIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Open</p>
       </MenuItem>
       <MenuItem>
         <IconButton
