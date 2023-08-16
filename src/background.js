@@ -1,11 +1,12 @@
-import {
-  saveTabs, dublicateTab, save2Json, openUrl, openSelected, doFakeCtrW, reload as reloadTab,
-} from './Tabs';
+import { setBadge } from './Badge';
+import { Command } from './Const';
+import defaultDB, { DBKey } from './Database';
 import { gotoHook } from './Hooks/background';
 import gotoOmnibox from './omnibox/background';
-import defaultDB, { DBKey } from './Database';
-import { Command } from './Const';
-import { getValue } from './Storage';
+import { getValue, setValue } from './Storage';
+import {
+  doFakeCtrW, dublicateTab, openSelected, openUrl, reload as reloadTab, save2Json, saveTabs,
+} from './Tabs';
 
 const TAG = '[Background]';
 
@@ -70,32 +71,32 @@ browser.contextMenus.create({
 let isReady = false;
 
 // check and set database
-browser.storage.local.get().then((storage) => {
+getValue().then((storage) => {
   if (!storage[DBKey.readlater]?.length) {
-    browser.storage.local.set({ [DBKey.readlater]: defaultDB.read_laters });
+    setValue({ [DBKey.readlater]: defaultDB.read_laters });
   }
 
   if (!storage[DBKey.collection]?.length) {
-    browser.storage.local.set({ [DBKey.collection]: defaultDB.collection });
+    setValue({ [DBKey.collection]: defaultDB.collection });
   }
 
   if (!storage[DBKey.background]?.length) {
-    browser.storage.local.set({ [DBKey.background]: defaultDB.background });
+    setValue({ [DBKey.background]: defaultDB.background });
   }
 
   if (!storage[DBKey.hooks]?.length) {
     console.log('[init hook ] ', { [DBKey.hooks]: defaultDB.hooks });
-    browser.storage.local.set({ [DBKey.hooks]: defaultDB.hooks });
+    setValue({ [DBKey.hooks]: defaultDB.hooks });
   }
 
   if (!storage[DBKey.settings]?.length) {
     console.log('[init settings ] ', { [DBKey.settings]: defaultDB.settings });
-    browser.storage.local.set({ [DBKey.settings]: defaultDB.settings });
+    setValue({ [DBKey.settings]: defaultDB.settings });
   }
 
   if (!storage[DBKey.omniboxs]?.length) {
     console.log('[init omnibox ] ', { [DBKey.omniboxs]: defaultDB.omniboxs });
-    browser.storage.local.set({ [DBKey.omniboxs]: defaultDB.omniboxs });
+    setValue({ [DBKey.omniboxs]: defaultDB.omniboxs });
   }
 });
 
@@ -121,7 +122,7 @@ function logStorageChange(changes, area) {
 browser.storage.onChanged.addListener(logStorageChange);
 
 // init data
-browser.storage.local.get().then((storage) => {
+getValue().then((storage) => {
   isReady = true;
   setActionIcon();
 
@@ -168,7 +169,7 @@ async function savePages() {
 
   const tabs = await getTabsInfo();
 
-  browser.storage.local.get().then((storage) => {
+  getValue().then((storage) => {
     console.log(`${TAG} savePage`, storage);
 
     db = storage[DBKey.readlater];
@@ -184,23 +185,15 @@ async function savePages() {
       db.push(tab);
     });
 
-    browser.storage.local.set({ [DBKey.readlater]: db }).then(() => {
-      console.log(`${TAG} SUCCESS saved ${newTabs.length} tabs.`);
-      updateBadge(db.length);
+    setValue({ [DBKey.readlater]: db }).then(() => {
+      console.log(`${TAG} SUCCESS saved ${newTabs.length} tabs. db=${db.length}`);
+      setBadge(String(db.length));
     }, onError);
   }, onError);
 }
 
 function onError(err) {
   console.log(`${TAG} ERROR`, err);
-}
-
-function updateBadge(length) {
-  getValue().then((storage) => {
-    browser.browserAction.setBadgeText({
-      text: `${length || storage[DBKey.readlater].length}`,
-    });
-  });
 }
 
 function tabExisted(newTab) {
