@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import {
   func, number, string,
 } from 'prop-types';
@@ -46,12 +47,11 @@ function Tab({
       <ListItemIcon>
         {icon
           ? (
-            <img
+            <LazyLoadImage
+              alt="tab favicon"
+              src={icon}
               width={16}
               height={16}
-              src={icon}
-              loading="lazy"
-              alt="tab favicon"
             />
           )
           : <WifiIcon />}

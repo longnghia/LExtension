@@ -44,6 +44,7 @@ function putSetting(config) {
 }
 
 window.getValue = getValue;
+window.setValue = setValue;
 
 export {
   getValue, setValue, getSettings, putSetting,
