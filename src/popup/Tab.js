@@ -8,6 +8,7 @@ import {
   func, number, string,
 } from 'prop-types';
 import React from 'react';
+import { getIcon } from '../utils';
 import './style.css';
 
 Tab.propTypes = {
@@ -34,6 +35,8 @@ function Tab({
   const openAndRemoveTab = () => {
     onClick(index);
   };
+
+  const icon = getIcon(tab.url);
   return (
     <ListItem
       divider
@@ -41,7 +44,17 @@ function Tab({
       key={key}
     >
       <ListItemIcon>
-        <WifiIcon />
+        {icon
+          ? (
+            <img
+              width={16}
+              height={16}
+              src={icon}
+              loading="lazy"
+              alt="tab favicon"
+            />
+          )
+          : <WifiIcon />}
       </ListItemIcon>
       <ListItemText
         id={`tab-${index}`}

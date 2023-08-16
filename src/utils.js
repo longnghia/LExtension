@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-bitwise */
 
 const hashCode = (str) => {
@@ -14,4 +13,15 @@ const hashCode = (str) => {
   return String(hash);
 };
 
-export { hashCode };
+const getIcon = (url) => {
+  try {
+    const { origin } = new URL(url);
+    const icon = `https://www.google.com/s2/favicons?sz=64&domain=${origin}`;
+    return icon;
+  } catch (error) {
+    console.error('$fail to get icon', error);
+    return null;
+  }
+};
+
+export { hashCode, getIcon };
