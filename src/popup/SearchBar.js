@@ -58,10 +58,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 PrimarySearchAppBar.propTypes = {
-  onQuery: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
-export default function PrimarySearchAppBar({ onQuery }) {
+export default function PrimarySearchAppBar({ onChange }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -187,7 +187,8 @@ export default function PrimarySearchAppBar({ onQuery }) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={onQuery}
+              onChange={onChange}
+
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

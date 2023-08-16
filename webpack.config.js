@@ -12,7 +12,7 @@ module.exports = {
     // and included in the extension source.
     // For example, you could add a background script like:
     background: 'background.js',
-    popup: 'popup.js',
+    popup: 'popup/popup.js',
     content: 'content.js',
     hook: 'Hooks/index.js',
     omnibox: 'omnibox/index.js',
