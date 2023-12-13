@@ -31,7 +31,9 @@ export default function SwitchListSecondary({ tabs, openAndRemoveTab, removeTab 
   };
 
   const onClick = React.useCallback(
-    (event, index) => { openAndRemoveTab(event, index); },
+    (event, index) => {
+      openAndRemoveTab(event, index);
+    },
     [openAndRemoveTab],
   );
 

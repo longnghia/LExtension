@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "build:watch": "yarn build -- -w",
-    "dev": "webpack --config webpack.dev.js && && concurrently \"yarn web-run\" \"yarn build:watch\"",
+    "dev": "webpack --config webpack.dev.js && concurrently \"yarn web-run\" \"yarn build:watch\"",
     "web-run": "web-ext run -s extension --start-url https://addons.mozilla.org/firefox/addon/ublock-origin/",
     "release": "webpack --config webpack.prod.js && web-ext build -s extension/ --overwrite-dest",
     "lint": "eslint --fix ."
@@ -23,6 +23,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@mui/styles": "latest",
     "js-beautify": "^1.14.8",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
@@ -41,6 +42,7 @@
     "@types/firefox-webext-browser": "^111.0.1",
     "babel-loader": "^9.0.0",
     "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^8.2.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^6.6.0",
     "eslint": "^8.41.0",

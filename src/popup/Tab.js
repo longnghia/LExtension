@@ -33,8 +33,8 @@ function Tab({
     }, 500);
   };
 
-  const openAndRemoveTab = () => {
-    onClick(index);
+  const openAndRemoveTab = (event) => {
+    onClick(event, index);
   };
 
   const icon = getIcon(tab.url);
