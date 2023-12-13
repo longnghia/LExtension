@@ -18,7 +18,7 @@
       "48": "images/ic_48.png"
     },
     "default_title": "Lextension",
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/index.html"
   },
 
   "background": {

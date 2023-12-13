@@ -60,6 +60,8 @@ function Popup() {
   };
 
   const openAndRemoveTab = (event, index) => {
+    console.log('🚀 ~ openAndRemoveTab ~ index:', index, tabs[index]);
+    return;
     openLink(tabs[index].url);
     if (event.altKey || event.metaKey) {
       removeTab(index);
