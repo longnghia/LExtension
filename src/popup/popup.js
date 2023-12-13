@@ -59,8 +59,10 @@ function Popup() {
     });
   };
 
+  const reversedTabs = tabs.slice(0).reverse();
+
   const openAndRemoveTab = (event, index) => {
-    openLink(tabs[index].url);
+    openLink(reversedTabs[index].url);
     if (event.altKey || event.metaKey) {
       removeTab(index);
     }
@@ -89,8 +91,6 @@ function Popup() {
   }, [query]);
 
   const onChangeQuery = useCallback((event) => setQuery(event.target.value), []);
-
-  const reversedTabs = tabs.slice(0).reverse();
 
   return (
     <div>
